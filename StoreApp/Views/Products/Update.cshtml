@@ -1,0 +1,94 @@
+﻿@model StoreApp.Models.Products
+@{
+    ViewBag.Title = "Update";
+}
+
+<style>
+    .heigth {
+        height: 200px;
+    }
+
+    .image-size {
+        width: 200px;
+    }
+</style>
+
+<h2>修改產品</h2>
+
+@using (Html.BeginForm("Update","Products", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.HiddenFor(p=>p.ProductID)
+        @Html.LabelFor(p => p.CategoryID, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @{
+                SelectList categories = new SelectList(ViewBag.datas, "CategoryID", "CategoryName");
+            }
+            @Html.DropDownListFor(p => p.CategoryID, categories, "請選擇", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.ModelNumber, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(p => p.ModelNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "ModelNumber" } })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.ModelName, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(p => p.ModelName, new { htmlAttributes = new { @class = "form-control", placeholder = "ModelName" } })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.ProductImage, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.HiddenFor(p=>p.ProductImage)
+            @Html.Editor("_ProductImage", new { htmlAttributes = new { Type = "file", @class = "form-control", placeholder = "ProductImage" ,id= "_ProductImage" } })
+            <div id="images" class="heigth">
+                <img src="@Url.Action("getImage",new { fileName =Html.DisplayFor(p=>p.ProductImage)})" class="image-size" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.UnitCost, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(p => p.UnitCost, new { htmlAttributes = new { Type = "Number", @class = "form-control", placeholder = "UnitCost" } })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Description, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(p => p.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Description" } })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">修改</button>
+        </div>
+    </div>
+    @ViewBag.message
+
+                }
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $("#_ProductImage").on("change", function () {
+
+        if (this.files && this.files[0]) {
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var image = $("<img>").attr('src', e.target.result).addClass("image-size");
+                $("#images").children().remove();
+                $("#images").append(image);
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+
+    })
+
+    //$(document).ready(function () {
+    //    var value = $("#ProductImage").val();
+    //    console.log(value);
+    //})
+</script>

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<StoreApp.Models.Products>
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .width {
+        width: 60px;
+    }
+</style>
+<h2>Index</h2>
+@Html.ActionLink("新增產品", "Create","Products",new { id=0}, new { @class = "btn btn-success" })
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(p => p.ModelNumber)</th>
+            <th>@Html.DisplayNameFor(p => p.ModelName)</th>
+            <th>@Html.DisplayNameFor(p => p.UnitCost)</th>
+            <th>@Html.DisplayNameFor(p => p.ProductImage)</th>
+            <th>修改</th>
+            <th>刪除</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Product in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(p => Product.ModelNumber)</td>
+                <td>@Html.DisplayFor(p => Product.ModelName)</td>
+                <td>@Html.DisplayFor(p => Product.UnitCost)</td>
+                <td>
+                    <img src="@Url.Action("getImage",new { fileName =Html.DisplayFor(p=>Product.ProductImage)})" title="getImage" class="width" />
+                    @*<img src="@Url.Action("getImageByte",new { id =Html.DisplayFor(p=>Product.ProductID)})" title="getImageByte" class="width" />*@
+                </td>
+                <td>@Html.ActionLink("修改","Update","Products",new { id=Product.ProductID},new { @class = "btn btn-warning" })</td>
+                <td>@Html.ActionLink("刪除", "Delete", "Products", new {id= Product.ProductID }, new { @class = "btn btn-danger" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
